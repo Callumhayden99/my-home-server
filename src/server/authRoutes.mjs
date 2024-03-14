@@ -1,9 +1,14 @@
+
 import express from "express";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
+import config from "../../config.js";
+
 
 const router = express.Router();
 const prisma = new PrismaClient();
+const SECRET_KEY = config.SECRET_KEY
 
 router.post("/signup", async (req, res) => {
   try {
@@ -17,6 +22,7 @@ router.post("/signup", async (req, res) => {
         email,
         location,
         password: hashedPassword,
+        role: "ADMIN",
       },
     });
 
@@ -43,7 +49,9 @@ router.post("/signin", async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    res.status(200).json(user);
+    // Generate and send the authentication token
+    const token = jwt.sign({ userId: user.id }, SECRET_KEY);
+    res.status(200).json({ token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

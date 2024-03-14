@@ -6,13 +6,17 @@ import {
   updateLuxuryHomeController,
   deleteLuxuryHomeController,
 } from "../controller/luxuryHomeController.js";
+import authMiddleware from "../authMiddleware.mjs";
 
 const router = express.Router();
 
-router.post("/", createLuxuryHomeController);
+// Public routes (accessible to all users)
 router.get("/", getLuxuryHomesController);
 router.get("/:id", getLuxuryHomeByIdController);
-router.put("/:id", updateLuxuryHomeController);
-router.delete("/:id", deleteLuxuryHomeController);
+
+// Admin routes (protected)
+router.post("/", authMiddleware, createLuxuryHomeController);
+router.put("/:id", authMiddleware, updateLuxuryHomeController);
+router.delete("/:id", authMiddleware, deleteLuxuryHomeController);
 
 export default router;
