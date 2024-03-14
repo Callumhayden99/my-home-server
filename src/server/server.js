@@ -12,6 +12,7 @@ app.use(morgan('dev')); // Log requests to the console in 'dev' format
 app.use(express.json()); // Parse JSON bodies
 app.use("/api/auth", authRoutes);
 app.use("/api/luxuryhomes", luxuryHomeRoutes);
+app.get("/health", (_req, res) => res.status(200).json({message: "ok"}))
 
 // Export the configured app
 export default app;
