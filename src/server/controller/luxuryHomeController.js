@@ -4,8 +4,13 @@ import { createLuxuryHome, getLuxuryHomes, getLuxuryHomeById, updateLuxuryHome, 
 export const createLuxuryHomeController = async (req, res) => {
   try {
     const luxuryHome = await createLuxuryHome(req.body);
-    res.status(201).json(luxuryHome);
+    if (luxuryHome) {
+      res.status(201).json(luxuryHome);
+    } else {
+      res.status(500).json({ error: 'Failed to create luxury home' });
+    }
   } catch (error) {
+    console.error("Error creating luxury home:", error);
     res.status(500).json({ error: 'Failed to create luxury home' });
   }
 };
@@ -40,7 +45,11 @@ export const updateLuxuryHomeController = async (req, res) => {
   const { id } = req.params;
   try {
     const luxuryHome = await updateLuxuryHome(Number(id), req.body);
-    res.json(luxuryHome);
+    if (luxuryHome) {
+      res.json(luxuryHome);
+    } else {
+      res.status(404).json({ error: 'Luxury home not found' });
+    }
   } catch (error) {
     res.status(500).json({ error: 'Failed to update luxury home' });
   }
@@ -50,8 +59,12 @@ export const updateLuxuryHomeController = async (req, res) => {
 export const deleteLuxuryHomeController = async (req, res) => {
   const { id } = req.params;
   try {
-    await deleteLuxuryHome(Number(id));
-    res.sendStatus(204);
+    const deletedLuxuryHome = await deleteLuxuryHome(Number(id));
+    if (deletedLuxuryHome) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).json({ error: 'Luxury home not found' });
+    }
   } catch (error) {
     res.status(500).json({ error: 'Failed to delete luxury home' });
   }
