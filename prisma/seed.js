@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-
 async function clearDatabase() {
   try {
     await prisma.luxuryHome.deleteMany();
@@ -12,9 +11,24 @@ async function clearDatabase() {
   }
 }
 
-
 async function seedLuxuryHomes() {
   const luxuryHomes = [
+    {
+      title: 'Grand Mansion',
+      description: 'A grand mansion with opulent interiors',
+      price: 7500000.00,
+      address: '963 Royal Estate',
+      city: 'Newport Beach',
+      country: 'USA',
+      homeType: 'MANSION',
+      bedrooms: 12,
+      bathrooms: 14,
+      hasGarden: true,
+      hasGarage: true,
+      sqftArea: 22000,
+      yearBuilt: 1995,
+      imageUrl: 'https://i.imgur.com/rycq7wD.jpg',
+    },
     {
       title: 'Luxurious Villa',
       description: 'A stunning villa with breathtaking views',
@@ -239,7 +253,6 @@ async function seedLuxuryHomes() {
       yearBuilt: 2002,
       imageUrl: 'https://i.imgur.com/FUglomC.jpg',
     },
-    
   ];
 
   try {
